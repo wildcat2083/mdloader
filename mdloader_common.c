@@ -728,10 +728,11 @@ int main(int argc, char *argv[])
 
     //Load applet
     FILE *fIn;
-    char appletfname[128] = "";
+    char appletfname[128] = "Applet";
     strlower(mcu->name);
 
-    sprintf(appletfname, "applet-flash-%s.bin", mcu->name);
+    //sprintf(appletfname, "applet-flash-%s.bin", mcu->name);
+    printf(appletfname, mcu->name);
     printf("Applet file: %s\n", appletfname);
 
     fIn = fopen(appletfname, "rb");
