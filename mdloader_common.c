@@ -630,19 +630,19 @@ int main(int argc, char *argv[])
     if (command == CMD_HELP || command == CMD_ABORT)
     {
         display_help();
-        goto exitProgram;
+        goto exitProgram1;
     }
 
     if (command == CMD_VERSION)
     {
         //Already displayed version by default
-        goto exitProgram;
+        goto exitProgram1;
     }
 
     if (command == CMD_LISTDEV)
     {
         list_devices(NULL);
-        goto exitProgram;
+        goto exitProgram1;
     }
 
     if (command == CMD_NONE)
@@ -650,7 +650,7 @@ int main(int argc, char *argv[])
         if (!testmode && !restart_after_program) //Allow certain commands/flags through if alone
         {
             display_help();
-            goto exitProgram;
+            goto exitProgram1;
         }
     }
 
@@ -717,9 +717,9 @@ int main(int argc, char *argv[])
 
     mailbox_t mail;
 
-    if (!test_port(portname, FALSE)) goto exitProgram;
+    if (!test_port(portname, FALSE)) goto exitProgram1;
 
-    if (!test_mcu(FALSE)) goto closePort;
+    if (!test_mcu(FALSE)) goto closeP;
 
     printf("Found MCU: %s\n", mcu->name);
 
@@ -979,9 +979,17 @@ int main(int argc, char *argv[])
         free_data(data);
 
         printf("Complete!\n");
+        //goto closeP;
 
         if (restart_after_program)
+        {
             jump_application();
+            goto closeP;
+        }
+        else
+        {
+            goto closeP;
+        }
     }
 
     if (command == CMD_UPLOAD)
@@ -1106,13 +1114,24 @@ int main(int argc, char *argv[])
     //Allow for restart flag with no command to restart the device
     if (command == CMD_NONE && restart_after_program)
         jump_application();
+    goto exitProgram1;
 
 closePort:
 
     close_port(FALSE);
+    return 0;
+
+closeP:
+
+    close_port(FALSE);
+    return 1;
 
 exitProgram:
 
     return 0;
+
+exitProgram1:
+
+    return 1;
 }
 
