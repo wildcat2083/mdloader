@@ -1119,19 +1119,19 @@ int main(int argc, char *argv[])
 closePort:
 
     close_port(FALSE);
-    return 0;
+    return 1;
 
 closeP:
 
     close_port(FALSE);
-    return 1;
+    return 0;
 
 exitProgram:
 
-    return 0;
+    return 1;
 
 exitProgram1:
 
-    return 1;
+    return 0;
 }
 
